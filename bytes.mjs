@@ -65,3 +65,13 @@ function fit(x) {
         prev.copy(buffer)
     }
 }
+
+
+export function xor(a, b) {
+    const length = Math.max(a.length, b.length)
+    const buffer = Buffer.allocUnsafe(length)
+    for (let i = 0; i < length; i++)
+      buffer[i] = a[i] ^ b[i]
+    return buffer
+  }
+  
