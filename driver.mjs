@@ -208,19 +208,14 @@ export default class PgDriver {
 		} else if (passwordType === 10) {
 			const algorithm = "7SCRAM-SHA-256";
 			this.nonce = crypto.randomBytes(18).toString("base64");
-		
-			const buffer2 = Buffer.alloc(56);
-			buffer2.write("p");
-			buffer2.write(algorithm, 4, algorithm.length);
-			buffer2.write("!n,,n=*,", algorithm.length + 8);
-			buffer2.write(`r=${this.nonce}`, algorithm.length + 16);
-			// console.log(buffer.toString("utf-8"));
-			// console.log(buffer2.toString("utf-8"));
-			// console.log(buffer.toString("hex"));
-			// console.log(buffer2.toString("hex"));
-			// this.nonce = crypto.randomBytes(18).toString("base64");
 
-			this.socket.write(buffer2);
+			const buffer = Buffer.alloc(56);
+			buffer.write("p");
+			buffer.write(algorithm, 4, algorithm.length);
+			buffer.write("!n,,n=*,", algorithm.length + 8);
+			buffer.write(`r=${this.nonce}`, algorithm.length + 16)
+
+			this.socket.write(buffer);
 		} else if (passwordType === 11) {
 			const hmac = (key, x) => crypto.createHmac("sha256", key).update(x).digest();
 			const sha256 = (x) => {
